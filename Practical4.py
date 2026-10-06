@@ -1,4 +1,6 @@
 #A*
+# A*
+
 graph = {
     "a": ({"b": 1, "d": 2, "e": 3}, 4),
     "b": ({"d": 1, "c": 2}, 3),
@@ -10,13 +12,13 @@ graph = {
 
 
 def get_min(q):
-    mn = (0, 0, float("INF"))
+    mn = None
 
     for i in q:
-        if sum(q[i]) < sum(mn):
-            mn = (i, q[i][0], q[i][1])
+        if mn is None or sum(q[i]) < sum(q[mn]):
+            mn = i
 
-    return mn[0]
+    return mn
 
 
 def a_star(graph, prev, dst, path, g, pcost):
@@ -64,12 +66,14 @@ def a_star(graph, prev, dst, path, g, pcost):
             mn,
             dst,
             path + [mn],
-            q,
+            g,
             pc
         )
 
         if new_path:
             return new_path
+
+        del q[mn]
 
     return []
 
@@ -92,7 +96,6 @@ if path:
 else:
     print("Path not found!")
 
-    
 #Greedy search
     """
 graph = {
